@@ -1,0 +1,92 @@
+@font-face
+  font-family: secret-typewriter
+  src: url('/fonts/secret-typewriter.ttf') format('truetype')
+
+@font-face
+  font-family: zxx-noise
+  src: url('/fonts/zxx-noise.otf')
+
+body
+  font-family: monospace
+  margin: 0
+
+html,
+body
+  height: 100%
+
+header
+  font-family: zxx-noise
+  font-size: 48px
+  height: 64px
+  line-height: 64px
+  padding: 0 32px
+
+#body
+  min-height: calc(100% - 64px)
+  margin-bottom: -64px
+  &:after
+    content: ''
+    display: block
+  nav
+    font-family: secret-typewriter
+    padding: 16px 48px
+    a
+      color: #000
+      font-size: 16px
+      margin-right: 16px
+      text-decoration: none
+      padding: 4px 8px
+      border: 2px solid #000
+      &:hover
+        color: #fff
+        background-color: #000
+      &:last-of-type
+        margin-right: 0
+
+#content
+  font-size: 16px
+  padding: 32px
+  label
+    display: inline-block
+    vertical-align: top
+    width: 240px
+  textarea,
+  input
+    font-size: 16px
+  textarea,
+  input,
+  select,
+  button
+    font-family: monospace
+  textarea
+    resize: none
+    height: 96px
+    width: calc(100% - 246px)
+    @media screen and (max-width: 563px)
+      width: 100%
+  input
+    width: 256px
+  .entry
+    margin-bottom: 24px
+    &:last-of-type
+      margin-bottom: 36px
+
+footer,
+#body:after
+  height: 64px
+
+footer
+  font-size: 12px
+  text-align: right
+  line-height: 64px
+  padding:  0 32px
+  a
+    text-decoration: line-through
+    color: #000
+    margin-right: 32px
+    &:hover
+      text-decoration: none
+    &:last-of-type
+      margin-right: 0
+  #copyright
+    float: left

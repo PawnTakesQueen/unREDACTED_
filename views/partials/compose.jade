@@ -1,0 +1,21 @@
+form.form-horizontal(ng-submit='submit()')
+  #security.entry
+    label Security Level 
+    select(required)
+      option High
+      option Sensitive
+  #subject.entry
+    label Subject 
+    input(type='text', required)
+  #message.entry
+    label Message 
+    textarea(required)
+  #attachments.entry
+    label Attachments 
+    input(type='file')
+  #password.entry
+    label Password to Decrypt Reply (Remember This) 
+    input(type='text', pattern='.{20,}', placeholder='20 character minimum', required)
+    |  
+    button(type='button') Generate
+  button(type='submit') Submit
