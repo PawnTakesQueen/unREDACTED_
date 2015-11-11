@@ -1,12 +1,16 @@
 var express = require('express');
 var path = require('path');
-var logger = require('morgan');
+//var logger = require('morgan');
+var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
 
-var routes = require('./routes/index');
+var layout = require('./routes/layout');
+var index = require('./routes/index');
 var compose = require('./routes/compose');
+var replies = require('./routes/replies');
+var protocol = require('./routes/protocol');
 
 var app = express();
 
@@ -17,51 +21,30 @@ app.set('view engine', 'jade');
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public/stylesheets/sass'),
   dest: path.join(__dirname, 'public/stylesheets'),
-  debug: true,
+  debug: false,
   indentedSyntax: true,
   outputStyle: 'compressed',
   prefix: '/stylesheets'
 }));
 
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+//connect mongodb
+app.db = mongoose.connect('mongodb://localhost/unREDACTED');
+//get all the database schemas
+require('./models')(app, mongoose);
+
+require('./crud/messageEndpoint.js').messageEndpoint(app,module);
+require('./crud/replieEndpoint.js').replieEndpoint(app,module);
+
+app.use('/', layout);
+app.use('/partials/index', index);
 app.use('/partials/compose', compose);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
+app.use('/partials/replies', replies);
+app.use('/partials/protocol', protocol);
 
 module.exports = app;

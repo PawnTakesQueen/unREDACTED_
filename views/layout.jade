@@ -3,11 +3,12 @@ html
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no')
-    title unREDACTED (αlpha)
+    title unREDACTED_ (αlpha)
     link(rel='stylesheet', href='/stylesheets/layout.css')
     script(src='/javascripts/jquery-2.1.4.min.js')
     script(src='/javascripts/openpgp.min.js')
     script(src='/javascripts/crypto-js/rollups/sha256.js')
+    script(src='/javascripts/crypto-js/rollups/sha512.js')
     script(src='/javascripts/crypto-js/rollups/aes.js')
     script(src='/javascripts/crypto-js/components/enc-base64-min.js')
     script(src='/javascripts/pgp.js')
@@ -16,17 +17,19 @@ html
     script(src='/angular/app.js')
     script(src='/angular/controllers.js')
     script(src='/javascripts/scripts.js', defer)
-  body(ng-app='unREDACTED')
+  body(ng-app='unREDACTED_')
     header
-      #title unREDACTED
+      #title un
+        span(style='text-decoration: line-through;') REDACTED
+        | _
+      nav(ng-controller='NavCtrl')
+        a(href='/#/', ng-class='{active: $location.path() == "/"}') Home
+        a(href='/#/compose', ng-class='{active: $location.path() == "/compose"}') Compose
+        a(href='/#/replies', ng-class='{active: $location.path() == "/replies"}') Replies
+        a(href='/#/protocol', ng-class='{active: $location.path() == "/protocol"}') Protocol
     #body
-      nav
-        a(href='/') HOME
-        a(href='/#/compose') COMPOSE
-        a(href='/#/replies') REPLIES
-        a(href='/#/protocol') PROTOCOL
       #content(ng-view)
     footer
-      #copyright v0.0.1 - 
+      #copyright v0.0.1 (αlpha) - 
         a(href='/LICENSE.txt', target='_blank') LICENSE
-      a(href='#') Source Code
+      a(href='//github.com/PariahVi/unREDACTED_') Source Code

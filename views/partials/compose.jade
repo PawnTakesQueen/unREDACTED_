@@ -1,21 +1,20 @@
-form.form-horizontal(ng-submit='submit()')
-  #security.entry
-    label Security Level 
-    select(required)
-      option High
-      option Sensitive
+form(ng-submit='submit()')
   #subject.entry
     label Subject 
-    input(type='text', required)
+    input(ng-model='subject', type='text', required)
   #message.entry
     label Message 
-    textarea(required)
+    textarea(ng-model='message', required)
   #attachments.entry
     label Attachments 
     input(type='file')
-  #password.entry
-    label Password to Decrypt Reply (Remember This) 
-    input(type='text', pattern='.{20,}', placeholder='20 character minimum', required)
-    |  
-    button(type='button') Generate
   button(type='submit') Submit
+#background
+  #id_popup
+    .remember Remember this to view reply!
+    .id(ng-bind='id_confirm')
+    button.okay(ng-click='okay()', type='button') Okay
+  #pgp_popup
+    span.title Generating PGP keypair.
+    br
+    | Browser will likely freeze for a moment.

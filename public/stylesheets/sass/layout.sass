@@ -1,8 +1,4 @@
 @font-face
-  font-family: secret-typewriter
-  src: url('/fonts/secret-typewriter.ttf') format('truetype')
-
-@font-face
   font-family: zxx-noise
   src: url('/fonts/zxx-noise.otf')
 
@@ -13,13 +9,41 @@ body
 html,
 body
   height: 100%
+  min-width: 320px
+
+a
+  outline: 0
 
 header
-  font-family: zxx-noise
-  font-size: 48px
   height: 64px
   line-height: 64px
   padding: 0 32px
+  #title
+    display: inline-block
+    font-family: zxx-noise
+    font-size: 48px
+    @media (max-width: 400px)
+      font-size: 32px
+  nav
+    display: inline-block
+    float: right
+    height: 64px
+    font-size: 14px
+    @media (max-width: 400px)
+      font-size: 12px
+    a
+      color: #000
+      margin-right: 24px
+      text-decoration: none
+      padding: 6px 0
+      color: #aaa
+      &:hover
+        color: #000
+      &:last-of-type
+        margin-right: 0
+      &.active
+        color: #000
+        border-bottom: 2px solid #000
 
 #body
   min-height: calc(100% - 64px)
@@ -27,32 +51,21 @@ header
   &:after
     content: ''
     display: block
-  nav
-    font-family: secret-typewriter
-    padding: 16px 48px
-    a
-      color: #000
-      font-size: 16px
-      margin-right: 16px
-      text-decoration: none
-      padding: 4px 8px
-      border: 2px solid #000
-      &:hover
-        color: #fff
-        background-color: #000
-      &:last-of-type
-        margin-right: 0
 
 #content
+  word-wrap: break-word
   font-size: 16px
   padding: 32px
   label
     display: inline-block
     vertical-align: top
-    width: 240px
+    width: 150px
   textarea,
-  input
+  input[type=text],
+  input[type=password]
     font-size: 16px
+    border: 1px solid #999
+    border-radius: 0
   textarea,
   input,
   select,
@@ -60,8 +73,9 @@ header
     font-family: monospace
   textarea
     resize: none
-    height: 96px
-    width: calc(100% - 246px)
+    height: 128px
+    width: calc(100% - 156px)
+    max-width: 400px;
     @media screen and (max-width: 563px)
       width: 100%
   input
@@ -90,3 +104,82 @@ footer
       margin-right: 0
   #copyright
     float: left
+
+#background
+  position: fixed
+  background-color: rgba(0, 0, 0, 0.5)
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  &,
+  #id_popup,
+  #pgp_popup
+    display: none
+  #id_popup,
+  #pgp_popup
+    position: fixed
+    padding: 96px 0
+    height: 56px
+    width: 560px
+    top: calc(50% - 124px)
+    left: calc(50% - 280px)
+    background-color: #fff
+    vertical-align: top
+    text-align: center
+  #pgp_popup
+    line-height: 28px
+    span.title
+      font-weight: bold;
+      font-size: 20px
+  #id_popup
+    line-height: 56px
+    .id
+      font-weight: bold
+      font-size: 24px
+    .okay
+      position: absolute
+      bottom: 24px
+      right: 24px
+    .remember
+      font-size: 18px
+      position: absolute
+      width: 560px
+      top: 40px
+      text-align: center
+
+button
+  cursor: pointer
+  background-color: #000
+  border: 0
+  color: #fff
+  outline: none
+  padding: 8px 12px
+  vertical-align: middle
+  &:hover
+    background-color: #666
+
+#generate
+  background-color: transparent
+  color: #aaa
+  padding: 0
+  margin-left: 8px
+  &:hover
+    color: #000
+
+a,
+#generate
+  transition: color .25s
+
+#reply
+  margin-top: 32px
+
+h1,
+h2,
+h3,
+h4
+  margin: 0
+
+blockquote
+  font-style: italic
+  font-weight: bold
