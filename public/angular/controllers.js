@@ -65,7 +65,7 @@ myApp.controller('RepliesCtrl', function($scope, $http) {
   $scope.submit = function() {
     id_hash = CryptoJS.SHA512($scope.id);
     $http.get('/api/replies/' + id_hash).success(function(data) {
-      if (data.length > 0) {
+      if (Object.keys(data).length > 0) {
         var ct = data['message'];
         var hash = CryptoJS.SHA256($scope.id);
         var key = CryptoJS.enc.Hex.parse(hash.toString());
