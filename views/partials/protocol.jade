@@ -49,6 +49,12 @@ br
 | If a reply has been made, the server will respond with an object with the keys message and time.  The values will be the AES256 CBC encrypted message and the UTC timestamp of when the reply was placed into the database.
 br
 br
+| The AES256 CBC encrypted message will be a hex string formatted as followed
+blockquote
+  | [Initialization Vector (32 characters)][Ciphertext]
+| The Ciphertext is then decrypted using the SHA-256 hash of the id and the Initialization Factor.
+br
+br
 | Once the client has received the reply, it will take the id and perform a SHA-256 hash on it and use that hash to decrypt the reply.  The decrypted reply will then be printed on the screen for the user to read.
 br
 br
