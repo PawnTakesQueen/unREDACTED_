@@ -41,10 +41,10 @@ require('./models')(app, mongoose);
 require('./crud/messageEndpoint.js').messageEndpoint(app,module);
 require('./crud/replieEndpoint.js').replieEndpoint(app,module);
 
-app.use('/', layout);
 app.use('/partials/index', index);
 app.use('/partials/compose', compose);
 app.use('/partials/replies', replies);
 app.use('/partials/protocol', protocol);
+app.use('/*', layout);
 
 module.exports = app;

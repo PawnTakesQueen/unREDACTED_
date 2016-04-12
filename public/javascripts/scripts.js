@@ -10,4 +10,3 @@ function get_attachment(callback) {
     callback('');
   }
 };
-

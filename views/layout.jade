@@ -4,6 +4,8 @@ html
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no')
     title unREDACTED_ (αlpha)
+    meta(name='fragment', content='!')                                               
+    base(href='/')
     link(rel='stylesheet', href='/stylesheets/layout.css')
     script(src='/javascripts/jquery-2.1.4.min.js')
     script(src='/javascripts/openpgp.min.js')
@@ -23,13 +25,13 @@ html
         span(style='text-decoration: line-through;') REDACTED
         | _
       nav(ng-controller='NavCtrl')
-        a(href='/#/', ng-class='{active: $location.path() == "/"}') Home
-        a(href='/#/compose', ng-class='{active: $location.path() == "/compose"}') Compose
-        a(href='/#/replies', ng-class='{active: $location.path() == "/replies"}') Replies
-        a(href='/#/protocol', ng-class='{active: $location.path() == "/protocol"}') Protocol
+        a(href='/#!/', ng-class='{active: $location.path() == "/"}') Home
+        a(href='/#!/compose', ng-class='{active: $location.path() == "/compose"}') Compose
+        a(href='/#!/replies', ng-class='{active: $location.path() == "/replies"}') Replies
+        a(href='/#!/protocol', ng-class='{active: $location.path() == "/protocol"}') Protocol
     #body
       #content(ng-view)
     footer
-      #copyright v0.0.3 (αlpha) - 
+      #copyright v0.0.4 (αlpha) - 
         a(href='/LICENSE.txt', target='_blank') LICENSE
-      a(href='//github.com/PariahVi/unREDACTED_') Source Code
+      a(href='//github.com/PawnTakesQueen/unREDACTED_') Source Code
