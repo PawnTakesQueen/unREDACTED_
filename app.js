@@ -1,22 +1,31 @@
-var express = require('express');
-var path = require('path');
-//var logger = require('morgan');
-var mongoose = require('mongoose');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var sassMiddleware = require('node-sass-middleware');
+var bodyParser = require('body-parser'),
+    multipart = require('connect-multiparty'),
+    express = require('express'),
+    mongoose = require('mongoose'),
+    sassMiddleware = require('node-sass-middleware'),
+    path = require('path');
 
-var layout = require('./routes/layout');
-var index = require('./routes/index');
-var compose = require('./routes/compose');
-var replies = require('./routes/replies');
-var protocol = require('./routes/protocol');
+var index = require('./routes/index'),
+    compose = require('./routes/compose'),
+    submit = require('./routes/submit'),
+    replies = require('./routes/replies'),
+    protocol = require('./routes/protocol');
 
 var app = express();
+    multipartMiddleware = multipart();
+
+//connect mongodb
+app.db = mongoose.connect('mongodb://localhost/unREDACTED');
+
+//get all the database schemas
+require('./models')(app, mongoose);
+
+require('./crud/messageEndpoint.js').messageEndpoint(app, module);
+require('./crud/replieEndpoint.js').replieEndpoint(app, module);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public/stylesheets/sass'),
@@ -27,24 +36,15 @@ app.use(sassMiddleware({
   prefix: '/stylesheets'
 }));
 
-//app.use(logger('dev'));
+app.use(multipartMiddleware);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//connect mongodb
-app.db = mongoose.connect('mongodb://localhost/unREDACTED');
-//get all the database schemas
-require('./models')(app, mongoose);
-
-require('./crud/messageEndpoint.js').messageEndpoint(app,module);
-require('./crud/replieEndpoint.js').replieEndpoint(app,module);
-
-app.use('/partials/index', index);
-app.use('/partials/compose', compose);
-app.use('/partials/replies', replies);
-app.use('/partials/protocol', protocol);
-app.use('/*', layout);
+app.use('/', index);
+app.use('/compose', compose);
+app.use('/submit', submit);
+app.use('/replies', replies);
+app.use('/protocol', protocol);
 
 module.exports = app;

@@ -1,0 +1,16 @@
+extends ./layout.pug
+
+block content
+  form(action='/submit', method='POST', enctype='multipart/form-data', autocomplete='off')
+    .title Compose
+    input(type='text', name='subject', placeholder='Subject', maxlength='256', required)
+    br
+    br
+    textarea(name='message', placeholder='Message', maxlength='2097152')
+    br
+    br
+    input(type='file', name='attachment')
+    include ./attachment_max_size.pug
+    br
+    br
+    input(type='submit', value='Submit Message')

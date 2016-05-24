@@ -1,0 +1,26 @@
+extends ./layout.pug
+
+block content
+  if reply_id_spaces
+    #reply_id.info
+      b KEEP A SAFE COPY OF THIS REPLY ID:
+      br
+      br
+      .reply_id #{reply_id_spaces}
+    br
+    br
+    b IMPORTANT: 
+    | You will need this Reply ID to view replies.  If you lose this Reply ID, you will not be able to view any replies, so make sure to keep a secure copy of this Reply ID.  Memorizing the Reply ID is best.  If you cannot memorize the Reply ID, make a written copy and keep it in a safe place until you can memorize it.
+    br
+    br
+    | Anyone with the Reply ID can see replies to this message, so keep any copies very secure and consider destroying any physical copies of the Replay ID once you have memorized it.
+  else if repeat
+    .warning This message has already been sent.
+  else if overflow
+    .warning Subject, Message, or Attachment is larger than allowed.  Subject must be at most 256 Bytes, Message must be at most 2KiB and Attachment must be at most 250MiB.
+  else if nothing
+    .warning You must send a Message or an Attachment 
+  else if no_subject
+    .warning Subject is required.
+  else
+    .warning If you wish to send a message, please go to the Compose page.

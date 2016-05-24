@@ -1,185 +1,137 @@
-@font-face
-  font-family: zxx-noise
-  src: url('/fonts/zxx-noise.otf')
+*
+  word-wrap: break-word
 
 body
-  font-family: monospace
+  font-family: sans
   margin: 0
+  background-color: #ededed
+  min-width: 544px
 
 html,
 body
   height: 100%
-  min-width: 320px
+
+a,
+input[type='submit']
+  transition: color .25s, opacity .25s
 
 a
   outline: 0
+  margin-right: 24px
+  text-decoration: none
+  padding: 6px 0
+  color: #aaa
+  &:hover
+    color: #000
+
+header,
+footer
+  min-width: 544px
 
 header
-  height: 64px
-  line-height: 64px
+  height: 48px
+  line-height: 48px
   padding: 0 32px
+  border-bottom: 1px solid #ccc
+  background-color: #fff
   #title
     display: inline-block
-    font-family: zxx-noise
-    font-size: 48px
-    @media (max-width: 400px)
-      font-size: 32px
+    img
+      height: 24px
+      vertical-align: middle
   nav
     display: inline-block
     float: right
-    height: 64px
+    height: 48px
     font-size: 14px
-    @media (max-width: 400px)
-      font-size: 12px
     a
-      color: #000
-      margin-right: 24px
-      text-decoration: none
-      padding: 6px 0
-      color: #aaa
-      &:hover
-        color: #000
       &:last-of-type
         margin-right: 0
-      &.active
-        color: #000
-        border-bottom: 2px solid #000
 
 #body
-  min-height: calc(100% - 64px)
-  margin-bottom: -64px
+  min-height: calc(100% - 49px)
+  margin-bottom: -48px
+  text-align: center
   &:after
     content: ''
     display: block
-
-#content
-  word-wrap: break-word
-  font-size: 16px
-  padding: 32px
-  label
+  #content
+    margin: 32px
+    width: 478px
+    background-color: #fff
+    border: 1px solid #ccc
+    border-radius: 3px
+    padding: 32px
+    text-align: left
     display: inline-block
-    vertical-align: top
-    width: 150px
-  textarea,
-  input[type=text],
-  input[type=password]
-    font-size: 16px
-    border: 1px solid #999
-    border-radius: 0
-  textarea,
-  input,
-  select,
-  button
-    font-family: monospace
-  textarea
-    resize: none
-    height: 128px
-    width: calc(100% - 156px)
-    max-width: 400px;
-    @media screen and (max-width: 563px)
-      width: 100%
-  input
-    width: 256px
-  .entry
-    margin-bottom: 24px
-    &:last-of-type
-      margin-bottom: 36px
+    form
+      .title
+        font-size: 28px
+        margin-bottom: 24px
+      input,
+      textarea
+        border-radius: 2px
+        outline: 0
+        width: 100%
+        padding: 0
+      input[type='text'],
+      textarea
+        font-family: sans
+        padding: 4px
+        border: 1px solid #ccc
+        width: calc(100% - 10px)
+      textarea
+        height: 128px
+        resize: vertical
+      input[type='submit']
+        padding: 12px
+        border: 1px solid #446cb3
+        outline: 0
+        background-color: #4b77be
+        color: #fff
+        opacity: 0.8
+        font-size: 14px
+        cursor: pointer
+        width: calc(100% - 2px)
+        &:hover
+          opacity: 1
+      .attachment-max-size
+        margin-top: 8px
+        font-size: 12px
+    .warning,
+    .info,
+    .success
+      width: calc(100% - 34px)
+      border-radius: 2px
+      padding: 16px
+      text-align: center
+      display: inline-block
+      font-family: monospace
+      font-size: 18px
+    .warning
+      background-color: #ffdede
+      border: 1px solid #edcccc
+      color: #bb4444
+    .info
+      background-color: #deedff
+      border: 1px solid #be88ff
+      color: #336688
 
 footer,
 #body:after
-  height: 64px
+  height: 48px
 
 footer
   font-size: 12px
   text-align: right
-  line-height: 64px
-  padding:  0 32px
+  line-height: 48px
+  padding: 0 32px
   a
-    text-decoration: line-through
-    color: #000
-    margin-right: 32px
-    &:hover
-      text-decoration: none
     &:last-of-type
       margin-right: 0
-  #copyright
+  #version
     float: left
+    color: #aaa
 
-#background
-  position: fixed
-  background-color: rgba(0, 0, 0, 0.5)
-  top: 0
-  bottom: 0
-  left: 0
-  right: 0
-  &,
-  #id_popup,
-  #pgp_popup
-    display: none
-  #id_popup,
-  #pgp_popup
-    position: fixed
-    padding: 96px 0
-    height: 56px
-    width: 560px
-    top: calc(50% - 124px)
-    left: calc(50% - 280px)
-    background-color: #fff
-    vertical-align: top
-    text-align: center
-  #pgp_popup
-    line-height: 28px
-    span.title
-      font-weight: bold;
-      font-size: 20px
-  #id_popup
-    line-height: 56px
-    .id
-      font-weight: bold
-      font-size: 24px
-    .okay
-      position: absolute
-      bottom: 24px
-      right: 24px
-    .remember
-      font-size: 18px
-      position: absolute
-      width: 560px
-      top: 40px
-      text-align: center
-
-button
-  cursor: pointer
-  background-color: #000
-  border: 0
-  color: #fff
-  outline: none
-  padding: 8px 12px
-  vertical-align: middle
-  &:hover
-    background-color: #666
-
-#generate
-  background-color: transparent
-  color: #aaa
-  padding: 0
-  margin-left: 8px
-  &:hover
-    color: #000
-
-a,
-#generate
-  transition: color .25s
-
-#reply
-  margin-top: 32px
-
-h1,
-h2,
-h3,
-h4
-  margin: 0
-
-blockquote
-  font-style: italic
+.bold
   font-weight: bold
