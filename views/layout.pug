@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    title unREDACTED_ (alpha)
+    meta(name='fragment', content='!')
+    base(href='/')
+    link(rel='stylesheet', href='/stylesheets/layout.css')
+  body
+    header
+      #title
+        a(href='/')
+          img(src='/images/logo.svg')
+      nav
+        a(href='/compose') Compose
+        a(href='/replies') Replies
+    #body
+      #content
+        block content
+    footer
+      #version v0.0.5
+      a(href='/PGP.txt', target='_blank') PGP Public Key
+      a(href='/LICENSE.txt', target='_blank') License
+      a(href='/protocol' target='_blank') Protocol
+      a(href='//github.com/PawnTakesQueen/unREDACTED_', target='_blank') Source Code
