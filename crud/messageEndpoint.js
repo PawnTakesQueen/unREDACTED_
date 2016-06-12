@@ -69,7 +69,7 @@ module.exports.messageEndpoint = function(app, module) {
     var message_no_id = ('/SUBJECT' + sanitize(req.body.subject.toString()) +
                         '/MESSAGE' + sanitize(req.body.message.toString()) +
                         '/ATTACHMENT' + sanitize(attachment.toString())),
-        message_full = '/ID' + id,
+        message_full = message_no_id + '/ID' + id,
         hash = crypto.createHash('sha512').update(message_no_id).digest('hex')
           .toString();
     var repeat = false;
