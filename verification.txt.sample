@@ -1,0 +1,19 @@
+[YYYY-MM-DD date of signing]
+
+This file is to verify that this unREDACTED_ server and PGP Public Key
+are owned by [Organization Name Goes Here].
+
+Attached is a copy of the PGP Public Key used to encrypt messages to
+[Organization Name Goes Here].
+
+The PGP Private Key only exists on an air-gapped computer in accordance to
+unREDACTED_'s protocol.
+
+Air-Gapped Computer PGP Fingerprint:
+
+[PGP Fingerprint Goes Here]
+
+Air-Gapped Computer PGP Public Key:
+
+[PGP Public Key Goes Here]
+

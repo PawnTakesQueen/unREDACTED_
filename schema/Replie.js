@@ -1,7 +1,7 @@
 exports = module.exports = function(app, mongoose) {
   //This creates the Replie Collection
   var replieSchema = new mongoose.Schema({
-    lookup: {type: String},
+    lookup_hash: {type: String},
     message: {type: String},
     time: {type: Date, default: Date.now},
   });

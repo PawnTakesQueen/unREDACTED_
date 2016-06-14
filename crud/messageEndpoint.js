@@ -7,14 +7,6 @@ var crypto = require('crypto'),
       zero: true
     });
 
-function errorHandler(err, req, res, next) {
-  if (res.headersSent) {
-    return next(err);
-  }
-  res.status(500);
-  res.render('error', {error: err});
-}
-
 function encrypt_message(public_key, message, callback) {
   var key = openpgp.key.readArmored(public_key);
   openpgp.encryptMessage(key.keys, message).then(function(ciphertext) {
