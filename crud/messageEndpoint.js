@@ -7,6 +7,7 @@ var crypto = require('crypto'),
       zero: true
     });
 
+// PGP encryption of message using public_key to encrypt
 function encrypt_message(public_key, message, callback) {
   var key = openpgp.key.readArmored(public_key);
   openpgp.encryptMessage(key.keys, message).then(function(ciphertext) {
@@ -15,13 +16,18 @@ function encrypt_message(public_key, message, callback) {
 }
 
 module.exports.messageEndpoint = function(app, module) {
-  //add data into the database
+  // If post request to /submit page
   app.post('/submit', multipartMiddleware, function(req, res) {
+    /*
+     * Get attachment data and zero out the file in the file system and
+     * delete it
+     */
     var attachment = fs.readFileSync(req.files.attachment.path, 'utf8');
     shredfile.shred(req.files.attachment.path);
     var id = '',
         id_spaces = '',
         possible = 'ACEFHJKLMNPRTUVWXYabcdefghijkmnopqrstuvwxyz34789';
+    // Create random id using 24 non-ambiguous characters
     function get_id() {
       var rnd = crypto.randomBytes(24),
           value = new Array(24),
@@ -32,17 +38,19 @@ module.exports.messageEndpoint = function(app, module) {
       return value.join('');
     }
     var id = get_id();
+    // Add spaces to id for human readability
     for (var i = 0; i < id.length; i++) {
       if (i > 0 && i % 4 == 0) {
         id_spaces += ' ';
       }
       id_spaces += id[i];
     }
+    // Replaces \ character with \\ and / character with \/ to sanitize val
     function sanitize(val) {
       return val.replace(/\\/g, '\\\\').replace(/\//g, '\\/');
     }
+    // Returns the byte length of a UTF-8 string
     function byte_length(str) {
-      // returns the byte length of an utf8 string
       var s = str.length;
       for (var i=str.length-1; i>=0; i--) {
         var code = str.charCodeAt(i);
@@ -57,7 +65,7 @@ module.exports.messageEndpoint = function(app, module) {
       }
       return s;
     }
-
+    // Create message syntax and checksum of content (var hash)
     var message_no_id = ('/SUBJECT' + sanitize(req.body.subject.toString()) +
                         '/MESSAGE' + sanitize(req.body.message.toString()) +
                         '/ATTACHMENT' + sanitize(attachment.toString())),
@@ -71,19 +79,24 @@ module.exports.messageEndpoint = function(app, module) {
     var subject_length = byte_length(req.body.subject.toString());
         message_length = byte_length(req.body.message.toString());
         attachment_length = byte_length(attachment.toString());
+    // Checks if checksum exists in messages collection of database
     module.exports.db.connection.models.Message.findOne({'checksum': hash},
                                                  function(err, docs) {
       if (docs) {
         repeat = true;
       }
+      // Checks if subject, message, or attachment are too large
       if (subject_length > 256 || message_length > 2097152 ||
           attachment_length > 262144000) {
         overflow = true;
+      // Or if there is no subject
       } else if (subject_length == 0) {
-
+        no_subject = true
+      // Or if there is no message AND no attachment
       } else if (message_length + attachment_length == 0) {
         nothing = true;
       }
+      // Sends error information if any exist
       if (repeat) {
         res.render('submit', {'repeat': repeat});
       } else if (overflow) {
@@ -92,12 +105,17 @@ module.exports.messageEndpoint = function(app, module) {
         res.render('submit', {'nothing': nothing});
       } else if (no_subject) {
         res.render('submit', {'no_subject': no_subject});
+      // If no errors
       } else {
+        // Retrieve data from PGP.txt file in public folder
         pgp_pub = fs.readFileSync('./public/PGP.txt', 'utf-8');
+        // PGP encrypt message_full using pgp_pub as public key
         encrypt_message(pgp_pub, message_full, function(message_pgp) {
+          // Save PGP encrypted message and checksum to database
           var messages = new module.exports.db.connection.models.Message(
             {message: message_pgp, checksum: hash});
           messages.save(function(err, doc) {
+            // Send human readable id back to user (id_spaces)
             res.render('submit', {'reply_id_spaces': id_spaces});
           });
         });

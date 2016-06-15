@@ -1,32 +1,42 @@
 var bodyParser = require('body-parser'),
-    multipart = require('connect-multiparty'),
     express = require('express'),
     mongoose = require('mongoose'),
-    sassMiddleware = require('node-sass-middleware'),
-    path = require('path');
+    multipart = require('connect-multiparty'),
+    path = require('path'),
+    sassMiddleware = require('node-sass-middleware');
 
+// Page route information
 var index = require('./routes/index'),
     compose = require('./routes/compose'),
     submit = require('./routes/submit'),
     replies = require('./routes/replies'),
     protocol = require('./routes/protocol');
 
+// Start express app and be able to handle multipart/form-data from forms
 var app = express();
     multipartMiddleware = multipart();
 
-//connect mongodb
+// Handle multipart/form-data, body form data (in utf-8) and Express
+app.use(multipartMiddleware);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Connect to mongodb
 app.db = mongoose.connect('mongodb://localhost/unREDACTED');
 
-//get all the database schemas
+// Get all the database schemas
 require('./models')(app, mongoose);
 
+// Database handlers
 require('./crud/messageEndpoint.js').messageEndpoint(app, module);
 require('./crud/replieEndpoint.js').replieEndpoint(app, module);
 
-// view engine setup
+// View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// Compile sass to css
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public/stylesheets/sass'),
   dest: path.join(__dirname, 'public/stylesheets'),
@@ -36,11 +46,7 @@ app.use(sassMiddleware({
   prefix: '/stylesheets'
 }));
 
-app.use(multipartMiddleware);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(path.join(__dirname, 'public')));
-
+// Handle page requests with routes
 app.use('/', index);
 app.use('/compose', compose);
 app.use('/submit', submit);

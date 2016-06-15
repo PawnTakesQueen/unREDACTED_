@@ -1,9 +1,9 @@
 extends ./layout.pug
 
 block content
-  form(action='/reply', method='POST', enctype='multipart/form-data', autocomplete='off')
+  form(action='/reply', method='POST', autocomplete='off')
     .title Replies
-    input(type='text', name='replyid', placeholder='Reply ID', maxlength='256', required)
+    input(type='text', name='replyid', placeholder='Reply ID', required)
     br
     br
     input(type='submit', value='Check Replies')
