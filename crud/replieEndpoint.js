@@ -3,7 +3,6 @@ var crypto = require('crypto'),
 
 // Server's decryption key for encrypted database files
 const server_key = new Buffer(fs.readFileSync('./key.txt').toString(), 'hex');
-console.log(server_key);
 
 // Decrypts value iv_ciphertext using value of key and AES256-CBC.
 function decrypt(iv_ciphertext, key) {
@@ -22,7 +21,6 @@ function encrypt(plaintext, key, iv) {
       encrypted = encipher.update(plaintext, 'utf8', 'binary');
   encrypted += encipher.final('binary');
   iv_ciphertext = iv.toString('hex') + Buffer(encrypted, 'binary').toString('hex');
-  console.log(iv_ciphertext);
   return iv_ciphertext;
 }
 
