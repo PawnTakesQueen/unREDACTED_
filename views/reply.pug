@@ -1,0 +1,15 @@
+extends ./layout.pug
+
+block content
+  if noreply
+    .warning There are currently no replies affiliated with this Reply ID.
+  else
+    each reply in replies
+      if reply.author === 0
+        .reply.right
+          .message #{reply.message}
+            .date #{reply.time}
+      else
+        .reply.left
+          .message #{reply.message}
+            .date #{reply.time}

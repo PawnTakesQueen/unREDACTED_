@@ -1,19 +1,11 @@
-var crypto = require('crypto'),
+var local_crypto = require('../modules/local_crypto'),
+    crypto = require('crypto'),
     fs = require('fs'),
-    openpgp = require('openpgp'),
     shredfile = require('shredfile') ({
       iterations: 25,
       remove: true,
       zero: true
     });
-
-// PGP encryption of message using public_key to encrypt
-function encrypt_message(public_key, message, callback) {
-  var key = openpgp.key.readArmored(public_key);
-  openpgp.encryptMessage(key.keys, message).then(function(ciphertext) {
-    callback(ciphertext);
-  });
-}
 
 module.exports.messageEndpoint = function(app, module) {
   // If post request to /submit page
@@ -108,9 +100,9 @@ module.exports.messageEndpoint = function(app, module) {
       // If no errors
       } else {
         // Retrieve data from PGP.txt file in public folder
-        pgp_pub = fs.readFileSync('./public/PGP.txt', 'utf-8');
+        pgp_pub = fs.readFileSync('./public/PGP.txt', 'utf8');
         // PGP encrypt message_full using pgp_pub as public key
-        encrypt_message(pgp_pub, message_full, function(message_pgp) {
+        local_crypto.pgpencrypt(pgp_pub, message_full, function(message_pgp) {
           // Save PGP encrypted message and checksum to database
           var messages = new module.exports.db.connection.models.Message(
             {message: message_pgp, checksum: hash});

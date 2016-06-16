@@ -8,9 +8,7 @@ _A Tor based system for securely sending a message and files to someone_
 unREDACTED\_ is a system that allows a source to securely and anonymously provide information to an organization.  Information is protected using PGP and replies are protected using AES256-CBC.
 
 #### Platforms:
-- BSD
 - GNU/Linux
-- OS X
 
 #### Dependencies:
 - Node.js

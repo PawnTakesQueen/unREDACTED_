@@ -3,7 +3,8 @@ exports = module.exports = function(app, mongoose) {
   var replieSchema = new mongoose.Schema({
     lookup_hash: {type: String},
     message: {type: String},
-    time: {type: Date, default: Date.now},
+    author: {type: Number},
+    time: {type: Date, default: Date.now}
   });
   //Form index on the _id field
   replieSchema.index({ _id: 1 });

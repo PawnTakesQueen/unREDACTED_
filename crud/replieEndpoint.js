@@ -1,28 +1,7 @@
-var crypto = require('crypto'),
+var local_crypto = require('../modules/local_crypto.js'),
+    crypto = require('crypto'),
     fs = require('fs');
 
-// Server's decryption key for encrypted database files
-const server_key = new Buffer(fs.readFileSync('./key.txt').toString(), 'hex');
-
-// Decrypts value iv_ciphertext using value of key and AES256-CBC.
-function decrypt(iv_ciphertext, key) {
-  var iv = new Buffer(iv_ciphertext.substr(0, 32), 'hex');
-      ciphertext = iv_ciphertext.substr(32);
-  ciphertext = new Buffer(ciphertext, 'hex').toString('binary');
-  var decipher = crypto.createDecipheriv('aes-256-cbc', key, iv),
-      decrypted = decipher.update(ciphertext, 'binary', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
-}
-
-// Encrypts value plaintext using values of key and iv with AES256-CBC.
-function encrypt(plaintext, key, iv) {
-  var encipher = crypto.createCipheriv('aes-256-cbc', key, iv),
-      encrypted = encipher.update(plaintext, 'utf8', 'binary');
-  encrypted += encipher.final('binary');
-  iv_ciphertext = iv.toString('hex') + Buffer(encrypted, 'binary').toString('hex');
-  return iv_ciphertext;
-}
 
 module.exports.replieEndpoint = function(app, module) {
   app.post('/reply', function(req, res) {
@@ -35,33 +14,37 @@ module.exports.replieEndpoint = function(app, module) {
       lookup_hash: hash
     }, function(err, docs_lookup) {
       if (!docs_lookup) {
-        res.send({});
+        res.render('reply', {'noreply': true});
       } else {
-        // TODO var key = decrypt(docs_lookup['decryption_key'], server_key)
+        // Server's decryption key for encrypted database files
+        var server_key = new Buffer(fs.readFileSync('./key.txt')
+          .toString(), 'hex');
+        // Decrypt reply's key
+        var key = new Buffer(local_crypto.aesdecrypt(
+          docs_lookup['decryption_key'], server_key), 'hex');
         module.exports.db.connection.models.Replie.find({
           lookup_hash: hash
         }, function(err, docs_reply) {
-          if (!docs_reply) {
-            res.send({});
+          if (docs_reply.length == 0) {
+            res.render('reply', {'noreply': true});
           } else {
-            /*
-            // TODO Decrypt all messages with var key and sort by time 
-            var messages = [];
+            var replies = [];
             for (var i = 0; i < docs_reply.length; i++) {
-              var date = new Date(docs[i]['time']),
+              var date = new Date(docs_reply[i]['time']),
                   month = ('0' + (date.getUTCMonth() + 1)).slice(-2),
                   day = ('0' + date.getUTCDate()).slice(-2),
                   year = date.getUTCFullYear(),
                   hour = ('0' + date.getUTCHours()).slice(-2),
                   minute = ('0' + date.getUTCMinutes()).slice(-2),
                   second = ('0' + date.getUTCSeconds()).slice(-2),
-                  datetime_stamp = (year + '-' + month + '-' + day + ':' +
+                  datetime_stamp = (year + '-' + month + '-' + day + ' ' +
                                     hour + ':' + minute + ':' + second +
                                     ' UTC')
-              var full_message = decrypt(docs_reply[i]['message'], key);
+              var full_message = local_crypto.aesdecrypt(
+                docs_reply[i]['message'], key);
               var reply_data = {
-                subject: get_subject(full_message),
-                message: get_message(full_message),
+                message: full_message,
+                author: docs_reply[i]['author'],
                 time: datetime_stamp,
                 timestamp: docs_reply[i]['time']
               };
@@ -71,7 +54,6 @@ module.exports.replieEndpoint = function(app, module) {
               return a.timestamp - b.timestamp;
             });
             res.render('reply', {'replies': replies});
-            */
           }
         });
       }
