@@ -58,10 +58,10 @@ module.exports.messageEndpoint = function(app, module) {
       return s;
     }
     // Create message syntax and checksum of content (var hash)
-    var message_no_id = ('/SUBJECT' + sanitize(req.body.subject.toString()) +
-                        '/MESSAGE' + sanitize(req.body.message.toString()) +
-                        '/ATTACHMENT' + sanitize(attachment.toString())),
-        message_full = message_no_id + '/ID' + id,
+    var message = ('/MESSAGE' + sanitize(req.body.message.toString()) +
+                   '/ATTACHMENT' + sanitize(attachment.toString())),
+        id_hash = crypto.createHash('sha512').update(id).digest('hex'),
+        message_full = message_no_id + '/IDHASH' + id_hash,
         hash = crypto.createHash('sha512').update(message_no_id).digest('hex')
           .toString();
     var repeat = false;

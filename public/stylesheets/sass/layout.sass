@@ -117,33 +117,18 @@ header
       border: 1px solid #be88ff
       color: #336688
     .reply
-      margin-bottom: 32px
+      margin-bottom: 16px
       .message
+        background-color: rgba(0, 0, 255, 0.1)
         border: 1px solid rgba(0, 0, 0, 0.1)
-        display: inline-block
-        max-width: calc(100% - 48px)
+        border-radius: 3px
         padding: 8px
         text-align: left
         .date
           color: rgba(0, 0, 0, 0.4)
           font-size: 10px
           margin-top: 16px
-      &.left
-        text-align: left
-        .message
-          background-color: rgba(0, 0, 0, 0.06)
-          border-radius: 3px 8px 8px 3px
-          .date
-            text-align: left
-      &.right
-        text-align: right
-        .message
-          background-color: rgba(0, 0, 255, 0.1)
-          border-radius: 8px 3px 3px 8px
-          .date
-            text-align: right
-      &:last-of-type
-        margin-bottom: 0
+          text-align: right
 
 footer,
 #body:after

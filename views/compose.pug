@@ -3,9 +3,6 @@ extends ./layout.pug
 block content
   form(action='/submit', method='POST', enctype='multipart/form-data', autocomplete='off')
     .title Compose
-    input(type='text', name='subject', placeholder='Subject', maxlength='256', required)
-    br
-    br
     textarea(name='message', placeholder='Message', maxlength='2097152')
     br
     br

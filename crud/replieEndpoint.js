@@ -44,7 +44,6 @@ module.exports.replieEndpoint = function(app, module) {
                 docs_reply[i]['message'], key);
               var reply_data = {
                 message: full_message,
-                author: docs_reply[i]['author'],
                 time: datetime_stamp,
                 timestamp: docs_reply[i]['time']
               };
@@ -53,7 +52,7 @@ module.exports.replieEndpoint = function(app, module) {
             replies.sort(function(a, b) {
               return a.timestamp - b.timestamp;
             });
-            res.render('reply', {'replies': replies});
+            res.render('reply', {'replies': replies, 'reply_id_hash': hash});
           }
         });
       }
